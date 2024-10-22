@@ -9,3 +9,159 @@
 
 ### Database diagram
 ![database-diagram](https://github.com/user-attachments/assets/fd84e85a-f578-4f11-9b96-788975d47b1f)
+
+##### Candidate
+```
+@Entity
+@Table(name = "candidate")
+@NamedQueries({
+        @NamedQuery(name = "candidate.findCandidateBySkillLevel",
+                    query = "SELECT c from Candidate c join c.candidateSkills cs where cs.skillLevel = :skillLevel "
+        ),
+        @NamedQuery(name = "candidate.findCandidateHasEmail",
+                    query = "SELECT c from Candidate c where c.email is not null "
+        )
+})
+public class Candidate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "can_id")
+    private long id;
+    private String last_name;
+    private String middle_name;
+    private String first_name;
+    private String email;
+    private String phone;
+    private String address;
+    private LocalDate dob;
+
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    private List<CandidateSkill> candidateSkills;
+
+    @Override
+    public String toString() {
+        return "Candidate{" +
+                "id=" + id +
+                ", last_name='" + last_name + '\'' +
+                ", middle_name='" + middle_name + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", dob=" + dob +
+                ", skillsCount=" + (candidateSkills != null ? candidateSkills.size() : 5) +  // Chỉ lấy kích thước của danh sách kỹ năng
+                '}';
+    }
+```
+##### CandidateSkill
+```
+@Entity
+@Table(name = "candidateSkill")
+public class CandidateSkill {
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "can_id")
+    private Candidate candidate;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
+
+    @Enumerated(EnumType.STRING)
+    private SkillLevel skillLevel;
+```
+##### Skill
+```
+@Entity
+@Table(name = "skill")
+public class Skill {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "skill_id")
+    private long id;
+    @Column(name = "skill_name")
+    private String skillName;
+    private String description;
+    private String field;
+
+    @OneToMany(mappedBy = "skill",cascade = CascadeType.ALL)
+    private List<CandidateSkill> candidateSkills;
+```
+##### Job
+```
+@Entity
+@Table(name = "job")
+public class Job {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "job_id")
+    private long id;
+    private String title;
+    private String description;
+```
+##### JobSkill
+```
+@Entity
+@Table(name = "jobSkill")
+public class JobSkill {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
+
+    @Enumerated(EnumType.STRING)
+    private SkillLevel requiredSkillLevel;
+```
+##### SkillLevel
+```
+public enum SkillLevel {
+    BEGINNER(1),
+    INTERMEDIATE(2),
+    ADVANCED(3),
+    EXPERT(4),
+    MASTER(5);
+    private final int value;
+
+    SkillLevel(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+
+}
+```
+### index
+![index](https://github.com/user-attachments/assets/5cdfbebe-4776-412b-ae75-621c001d8331)
+
+### Home
+![home](https://github.com/user-attachments/assets/ec5c2835-3eff-43f7-84db-537dec6853d6)
+
+### job
+![job](https://github.com/user-attachments/assets/87a35460-fae9-4b59-a262-6af00c1f4f05)
+
+### skill
+![skill](https://github.com/user-attachments/assets/62ca5adc-544b-4659-95dc-82584dce44db)
+
+### Filter By Level 1
+![FilterByLevel1](https://github.com/user-attachments/assets/b77da3ef-4083-47a1-a396-4268c15e875e)
+
+### Filter By Level 2
+![FilterByLevel2](https://github.com/user-attachments/assets/a6e328cb-b01e-4684-8982-ad0180678694)
+
+### Candidate Has Email
+![CandidateHasEmail](https://github.com/user-attachments/assets/0ecb7b60-1049-4e9f-98cc-f40bbdd7f4ad)
+
+
+
+
+
