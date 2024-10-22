@@ -48,16 +48,19 @@ public class PageServlet extends HttpServlet {
                 case "candidate":
                     handleActionCandidate(req, resp);
                     break;
+                case "detail-candidate":
+                    handleActionCandidateDetail(req, resp);
+                    break;
                 case "job":
                     handleActionJob(req, resp);
                     break;
                 case "skill":
                     handleActionSkill(req, resp);
                 case "report1":
-                    handleCandidateByLevel(req, resp);
+                    handleGetReport1(req, resp);
                     break;
                 case "report2":
-                    handleCandidateHasEmail(req, resp);
+                    handleGetReport2(req, resp);
                     break;
             }
 
@@ -66,18 +69,34 @@ public class PageServlet extends HttpServlet {
         }
     }
 
+    private void handleGetReport2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        CandidateService service = new CandidateServiceImpl();;
+        List<Candidate> candidates = service.findCandidateHasEmail();
+        req.setAttribute("candidates", candidates);
+        String page = "/report/report2.jsp";
+        forwardToPage(page, req, resp);
+    }
+
+    private void handleGetReport1(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String page = "/report/report1.jsp";
+        forwardToPage(page, req, resp);
+    }
+
+    private void handleActionCandidateDetail(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        long can_id = Long.parseLong(req.getParameter("id"));
+        CandidateService service = new CandidateServiceImpl();
+        Candidate candidate = service.getCandidateDetail(can_id);
+        System.out.println(candidate);
+        req.setAttribute("candidate", candidate);
+        String page = "/candidate/candidate_datail.jsp";
+        forwardToPage(page, req, resp);
+    }
 
 
     private void forwardToPage(String page, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher(page).include(req, resp);
     }
-
-    private void handleCandidateHasEmail(HttpServletRequest req, HttpServletResponse resp) {
-    }
-
-    private void handleCandidateByLevel(HttpServletRequest req, HttpServletResponse resp) {
-
-    }
+    
 
     private void handleActionCandidate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CandidateService service = new CandidateServiceImpl();
@@ -124,6 +143,14 @@ public class PageServlet extends HttpServlet {
         }
     }
 
-    private void handleReportFillerCandidateByLevel(HttpServletRequest req, HttpServletResponse resp) {
+    private void handleReportFillerCandidateByLevel(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        CandidateService  service = new CandidateServiceImpl();
+        int skillLevel = Integer.parseInt(req.getParameter("skillLevel"));
+        System.out.println(skillLevel);
+        List<Candidate> candidatesByLevel = service.findCandidateBySkillLevel(skillLevel);
+        req.setAttribute("candidates", candidatesByLevel);
+        String page = "/report/report1.jsp";
+        System.out.println(candidatesByLevel);
+        forwardToPage(page, req, resp);
     }
 }

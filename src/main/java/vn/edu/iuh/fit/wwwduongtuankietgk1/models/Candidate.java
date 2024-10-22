@@ -141,7 +141,23 @@ public class Candidate {
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 ", dob=" + dob +
-                ", candidateSkills=" + candidateSkills +
+                ", skillsCount=" + (candidateSkills != null ? candidateSkills.size() : 5) +  // Chỉ lấy kích thước của danh sách kỹ năng
                 '}';
     }
+
+
+//    @Override
+//    public String toString() {
+//        return "Candidate{" +
+//                "id=" + id +
+//                ", last_name='" + last_name + '\'' +
+//                ", middle_name='" + middle_name + '\'' +
+//                ", first_name='" + first_name + '\'' +
+//                ", email='" + email + '\'' +
+//                ", phone='" + phone + '\'' +
+//                ", address='" + address + '\'' +
+//                ", dob=" + dob +
+//                ", candidateSkills=" + candidateSkills +
+//                '}';
+//    }
 }

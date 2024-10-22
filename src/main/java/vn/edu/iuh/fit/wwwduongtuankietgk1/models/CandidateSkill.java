@@ -41,6 +41,18 @@ public class CandidateSkill {
         this.skillLevel = skillLevel;
     }
 
+    public Candidate getCandidate() {
+        return candidate;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public SkillLevel getSkillLevel() {
+        return skillLevel;
+    }
+
     public CandidateSkill(Candidate candidate, Skill skill, SkillLevel skillLevel) {
         this.candidate = candidate;
         this.skill = skill;

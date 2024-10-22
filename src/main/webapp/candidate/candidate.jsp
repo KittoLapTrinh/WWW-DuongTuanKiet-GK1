@@ -1,5 +1,6 @@
 <%@ page import="vn.edu.iuh.fit.wwwduongtuankietgk1.models.Candidate" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="vn.edu.iuh.fit.wwwduongtuankietgk1.models.CandidateSkill" %><%--
   Created by IntelliJ IDEA.
   User: Student
   Date: 10/19/2024
@@ -44,8 +45,16 @@
                 <td><%=can.getEmail()%></td>
                 <td><%=can.getAddress()%></td>
                 <td><%=can.getDob()%></td>
-                <td><a href="page?action=detail-candidate&id=<%=can.getId()%>">See Detail</a> </td>
+<%--                <td><a href="page?action=detail-candidate&id=<%=can.getId()%>">See Detail</a> </td>--%>
+                <td>
+                    <%
+                        List<CandidateSkill> skills = can.getCandidateSkills();
+                        for(CandidateSkill skill: skills){
+                            out.println(skill.getSkill().getSkillName() +" - Level: " + skill.getSkillLevel().getValue() + "<br/>");
+                        }
 
+                    %>
+                </td>
             </tr>
             <%
                 }

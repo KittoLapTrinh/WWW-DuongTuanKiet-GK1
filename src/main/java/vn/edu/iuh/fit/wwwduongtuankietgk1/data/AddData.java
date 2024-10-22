@@ -11,7 +11,7 @@ import java.util.List;
 public class AddData {
     public static void main(String[] args) {
         // Add Candidate
-        Candidate candidate1 = new Candidate("Duong", "Tuan", "Kiet", "12 Nguyen Van Bao", null, "0348333253", LocalDate.of(2024, 1, 1), null);
+        Candidate candidate1 = new Candidate("Huynh", "Tam", "Nhu", "12 Nguyen Van Bao", "tamnhu@gmail.com", "0348333253", LocalDate.of(2024, 1, 1), null);
         CandidateRepository repository = new CandidateRepository();
         repository.insert(candidate1);
         System.out.println(candidate1);
@@ -35,7 +35,7 @@ public class AddData {
         jobRepository.insert(job3);
 
         // Add CandidateSkill
-        CandidateSkill candidateSkill1 = new CandidateSkill(candidate1,skill1,SkillLevel.INTERMEDIATE);
+        CandidateSkill candidateSkill1 = new CandidateSkill(candidate1,skill1,SkillLevel.BEGINNER);
         CandidateSkillRepository candidateSkillRepository = new CandidateSkillRepository();
         candidateSkillRepository.insert(candidateSkill1);
         System.out.println(candidateSkill1);
