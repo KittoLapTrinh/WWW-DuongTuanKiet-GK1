@@ -13,6 +13,7 @@
 ##### Candidate
 ```
 @Entity
+[![Java Badge](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](#) [![Bootstrap Badge](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-
 @Table(name = "candidate")
 @NamedQueries({
         @NamedQuery(name = "candidate.findCandidateBySkillLevel",
@@ -145,6 +146,9 @@ public enum SkillLevel {
 
 ### Home
 ![home](https://github.com/user-attachments/assets/ec5c2835-3eff-43f7-84db-537dec6853d6)
+
+# Candidate insert form
+![image](https://github.com/user-attachments/assets/1c0731b5-d8e4-4101-86bb-5239d6cacaff)
 
 ### job
 ![job](https://github.com/user-attachments/assets/87a35460-fae9-4b59-a262-6af00c1f4f05)
