@@ -32,6 +32,8 @@ public class Candidate {
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
     private List<CandidateSkill> candidateSkills;
 
+
+
     public Candidate(String first_name, String middle_name, String last_name, String address, String email, String phone, LocalDate dob, List<CandidateSkill> candidateSkills) {
         this.first_name = first_name;
         this.middle_name = middle_name;

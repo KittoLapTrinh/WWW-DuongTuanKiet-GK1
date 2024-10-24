@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import vn.edu.iuh.fit.wwwduongtuankietgk1.models.Candidate;
+import vn.edu.iuh.fit.wwwduongtuankietgk1.models.CandidateSkill;
 import vn.edu.iuh.fit.wwwduongtuankietgk1.models.Job;
 import vn.edu.iuh.fit.wwwduongtuankietgk1.models.Skill;
 import vn.edu.iuh.fit.wwwduongtuankietgk1.services.CandidateService;
@@ -17,6 +18,7 @@ import vn.edu.iuh.fit.wwwduongtuankietgk1.services.impl.SkillServiceImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet(name = "pageServlet", value = "/page")
@@ -96,7 +98,7 @@ public class PageServlet extends HttpServlet {
     private void forwardToPage(String page, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher(page).include(req, resp);
     }
-    
+
 
     private void handleActionCandidate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CandidateService service = new CandidateServiceImpl();
@@ -137,11 +139,43 @@ public class PageServlet extends HttpServlet {
                 case "report1":
                     handleReportFillerCandidateByLevel(req,resp);
                     break;
+                case "insertCandidate":
+                    handleInsertCandidate(req, resp);
+                    break;
             }
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+
+    private void handleInsertCandidate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Lấy dữ liệu từ form
+        String firstName = req.getParameter("firstName");
+        String middleName = req.getParameter("middleName");
+        String lastName = req.getParameter("lastName");
+        String phone = req.getParameter("phone");
+        String email = req.getParameter("email");
+        String address = req.getParameter("address");
+        LocalDate dob = LocalDate.parse(req.getParameter("dob"));
+
+        // Tạo đối tượng Candidate
+        Candidate candidate = new Candidate();
+        candidate.setFirst_name(firstName);
+        candidate.setMiddle_name(middleName);
+        candidate.setLast_name(lastName);
+        candidate.setPhone(phone);
+        candidate.setEmail(email);
+        candidate.setAddress(address);
+        candidate.setDob(dob);
+
+        // Gọi service để thêm candidate
+        CandidateService service = new CandidateServiceImpl();
+        service.insert(candidate);
+
+        // Chuyển hướng về trang danh sách ứng viên
+        resp.sendRedirect("page?action=candidate");
+    }
+
 
     private void handleReportFillerCandidateByLevel(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CandidateService  service = new CandidateServiceImpl();
