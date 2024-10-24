@@ -42,7 +42,7 @@
                 List<CandidateSkill> skills = can.getCandidateSkills();
                 if (skills != null && !skills.isEmpty()) {
                     for (CandidateSkill skill : skills) {
-                        out.println(skill.getSkill().getSkillName() + " - Level: " + skill.getSkillLevel().name() + "<br/>"); // Hiển thị tên kỹ năng và cấp độ
+                        out.println("Level: " + skill.getSkillLevel().name() + "<br/>"); // Hiển thị tên kỹ năng và cấp độ
                     }
                 } else {
                     out.println("No skills found");

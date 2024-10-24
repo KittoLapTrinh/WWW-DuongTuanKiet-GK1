@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import vn.edu.iuh.fit.wwwduongtuankietgk1.enums.SkillLevel;
 import vn.edu.iuh.fit.wwwduongtuankietgk1.models.Candidate;
 import vn.edu.iuh.fit.wwwduongtuankietgk1.models.CandidateSkill;
 import vn.edu.iuh.fit.wwwduongtuankietgk1.models.Job;
@@ -19,6 +20,7 @@ import vn.edu.iuh.fit.wwwduongtuankietgk1.services.impl.SkillServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "pageServlet", value = "/page")
@@ -158,6 +160,31 @@ public class PageServlet extends HttpServlet {
         String address = req.getParameter("address");
         LocalDate dob = LocalDate.parse(req.getParameter("dob"));
 
+        // Lấy skillLevel từ form và ánh xạ nó sang SkillLevel enum
+        String skillLevelParam = req.getParameter("skillLevel");
+        int skillLevelInt = Integer.parseInt(skillLevelParam); // Chuyển đổi chuỗi sang số nguyên
+
+        SkillLevel skillLevel = null;
+        switch (skillLevelInt) {
+            case 1:
+                skillLevel = SkillLevel.BEGINNER;
+                break;
+            case 2:
+                skillLevel = SkillLevel.INTERMEDIATE;
+                break;
+            case 3:
+                skillLevel = SkillLevel.ADVANCED;
+                break;
+            case 4:
+                skillLevel = SkillLevel.EXPERT;
+                break;
+            case 5:
+                skillLevel = SkillLevel.MASTER;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid skill level: " + skillLevelInt);
+        }
+
         // Tạo đối tượng Candidate
         Candidate candidate = new Candidate();
         candidate.setFirst_name(firstName);
@@ -168,11 +195,26 @@ public class PageServlet extends HttpServlet {
         candidate.setAddress(address);
         candidate.setDob(dob);
 
-        // Gọi service để thêm candidate
+        // Tạo danh sách kỹ năng
+        List<CandidateSkill> candidateSkills = new ArrayList<>();
+        Skill skill = new Skill();
+        skill.setId(1L);  // Thay đổi ID skill này theo thực tế (ví dụ: lấy từ CSDL hoặc form)
+
+        // Tạo CandidateSkill và gán giá trị
+        CandidateSkill candidateSkill = new CandidateSkill();
+        candidateSkill.setCandidate(candidate);
+        candidateSkill.setSkill(skill);
+        candidateSkill.setSkillLevel(skillLevel);
+
+        // Thêm CandidateSkill vào danh sách kỹ năng của ứng viên
+        candidateSkills.add(candidateSkill);
+        candidate.setCandidateSkills(candidateSkills);
+
+        // Gọi service để thêm candidate vào CSDL
         CandidateService service = new CandidateServiceImpl();
         service.insert(candidate);
 
-        // Chuyển hướng về trang danh sách ứng viên
+        // Chuyển hướng về trang danh sách ứng viên sau khi thêm thành công
         resp.sendRedirect("page?action=candidate");
     }
 
